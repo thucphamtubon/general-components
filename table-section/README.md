@@ -7,22 +7,50 @@ Một module table component được tối ưu hóa với cấu trúc export r�
 ```
 table-section/
 ├── components/          # Các component chính
-│   ├── AppTable.tsx    # Component table chính với đầy đủ tính năng
-│   ├── MyTable.tsx     # Component table cơ bản
-│   ├── SummaryTable.tsx # Component hiển thị summary
-│   └── index.ts        # Export components
-├── hooks/              # React hooks
-│   ├── useTable.tsx    # Hook quản lý table context
-│   └── index.ts        # Export hooks
-├── services/           # Business logic
-│   ├── table.services.tsx # Xử lý columns, search, filter
-│   └── index.ts        # Export services
+│   ├── EnhancedAppTable/    # Component table chính (refactored)
+│   │   ├── EnhancedAppTable.tsx
+│   │   ├── EnhancedAppTable.less
+│   │   └── index.ts
+│   ├── TableHeader/         # Header với search và selection
+│   │   ├── TableHeader.tsx
+│   │   ├── TableHeader.less
+│   │   └── index.ts
+│   ├── TableSearchBar/      # Search functionality
+│   │   ├── TableSearchBar.tsx
+│   │   ├── TableSearchBar.less
+│   │   └── index.ts
+│   ├── TableSelectionInfo/  # Selection information
+│   │   ├── TableSelectionInfo.tsx
+│   │   ├── TableSelectionInfo.less
+│   │   └── index.ts
+│   ├── SummaryTable.tsx     # Component hiển thị summary
+│   └── index.ts            # Export components
+├── hooks/              # React hooks (SRP-based)
+│   ├── useTable.tsx          # Hook quản lý table context (legacy)
+│   ├── useTableSearch.ts     # Chuyên xử lý search
+│   ├── useTableSelection.ts  # Chuyên xử lý selection
+│   ├── useTablePagination.ts # Chuyên xử lý pagination
+│   ├── useTableState.ts      # Chuyên xử lý state
+│   ├── useTableOrchestrator.ts # Kết hợp các hooks
+│   └── index.ts             # Export hooks
+├── services/           # Business logic (SRP-based)
+│   ├── table.services.tsx   # Legacy service
+│   ├── search.service.ts    # Chuyên xử lý search logic
+│   ├── column-service/      # Chuyên xử lý columns
+│   │   ├── generateColumns.ts
+│   │   ├── transformColumn.ts
+│   │   └── index.ts
+│   └── index.ts            # Export services
 ├── types/              # TypeScript definitions
 │   ├── Table.types.ts  # Tất cả type definitions
 │   └── index.ts        # Export types
 ├── utils/              # Utility functions
 │   ├── Table.logics.ts # Helper functions, state management
 │   └── index.ts        # Export utilities
+├── table-inputs/       # Input components tối ưu cho table
+│   ├── components/     # TableInputText, Number, Select, etc.
+│   ├── shared/         # Shared hooks, types, utils
+│   └── styles/         # CSS styles
 └── index.ts            # Main export file
 ```
 
@@ -30,17 +58,36 @@ table-section/
 
 ### Import components
 ```typescript
-import { AppTable, MyTable, SummaryTable } from './table-section';
+import { 
+  EnhancedAppTable, 
+  SummaryTable,
+  TableHeader,
+  TableSearchBar,
+  TableSelectionInfo
+} from './table-section';
 ```
 
 ### Import hooks
 ```typescript
-import { useTable, TableProvider, useSearchText } from './table-section';
+import { 
+  useTable, 
+  TableProvider, 
+  useTableSearch,
+  useTableSelection,
+  useTablePagination,
+  useTableOrchestrator
+} from './table-section';
 ```
 
 ### Import types
 ```typescript
-import type { IConstants, ActionsReturn, TableContextType } from './table-section';
+import type { 
+  IConstants, 
+  ActionsReturn, 
+  TableContextType,
+  EnhancedAppTableProps,
+  TableHeaderProps
+} from './table-section';
 ```
 
 ### Import utilities
@@ -50,24 +97,43 @@ import { xoaDauVietNam, useStates, thongBaoQuyenChinhSua } from './table-section
 
 ## Tính năng chính
 
-### AppTable
-- Component table đầy đủ tính năng
+### EnhancedAppTable (Refactored)
+- Component table đầy đủ tính năng theo SRP
 - Hỗ trợ search, filter, sort
 - Pagination tự động
-- Row selection
-- Expandable rows
-- Custom actions
+- Row selection với external control
+- Striped rows và sticky headers
+- Performance optimization với useMemo
+- Accessibility compliant
 
-### MyTable
-- Component table cơ bản
-- Wrapper cho Antd Table
-- Pagination tùy chỉnh
-- Responsive design
+### TableHeader
+- Kết hợp search và selection components
+- Responsive layout options
+- Live regions cho screen readers
+- Custom content support
+
+### TableSearchBar
+- Dedicated search functionality
+- Keyboard shortcuts (Escape to clear)
+- Customizable placeholder và styling
+- Accessibility support
+
+### TableSelectionInfo
+- Hiển thị thông tin selection
+- Auto-hide khi không có selection
+- Multiple color themes
+- Clear all functionality
 
 ### SummaryTable
 - Hiển thị summary data
 - Tính toán tự động
 - Custom styling
+
+### Specialized Hooks
+- `useTableSearch`: Chỉ xử lý search logic
+- `useTableSelection`: Chỉ xử lý selection logic
+- `useTablePagination`: Chỉ xử lý pagination logic
+- `useTableOrchestrator`: Kết hợp tất cả hooks
 
 ## Ưu điểm của cấu trúc mới
 
