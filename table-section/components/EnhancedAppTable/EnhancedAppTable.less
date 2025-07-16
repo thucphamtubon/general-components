@@ -1,0 +1,115 @@
+// === Enhanced App Table Styles ===
+// Import dependent styles
+@import '../TableSearchBar/TableSearchBar.less';
+@import '../TableSelectionInfo/TableSelectionInfo.less';
+@import '../TableHeader/TableHeader.less';
+
+// === Serene Harmony Palette (2025) ===
+@primary-row-bg: #F4F4F5;      // Light Cloud Gray (60%)
+@row-hover-bg: #E8EDF1;       // Lightened Calm Ocean Blue (hover)
+
+.enhanced-app-table {
+  // Base table wrapper
+  width: 100%;
+  
+  // Striped rows
+  .table-row--odd td {
+    background-color: @primary-row-bg;
+  }
+
+  // Hover row background
+  .ant-table-tbody > tr:hover > td {
+    background-color: @row-hover-bg;
+  }
+
+  // Ensure proper spacing between header and table
+  .table-header + .ant-table-wrapper {
+    margin-top: 0;
+  }
+
+  // Loading state improvements
+  .ant-table-placeholder {
+    .ant-table-cell {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  // Better empty state styling
+  .ant-empty {
+    margin: 32px 0;
+    
+    .ant-empty-description {
+      color: #999;
+    }
+  }
+
+  // Responsive improvements
+  @media (max-width: 768px) {
+    // Reduce padding on mobile
+    .ant-table-cell {
+      padding: 8px 4px;
+    }
+    
+    // Stack table header components on mobile
+    .table-header--horizontal {
+      flex-direction: column;
+    }
+  }
+
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    .table-row--odd td {
+      background-color: #f0f0f0;
+    }
+    
+    .ant-table-tbody > tr:hover > td {
+      background-color: #e0e0e0;
+    }
+  }
+
+  // Sticky header improvements
+  &.sticky-header {
+    .ant-table-thead > tr > th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #fafafa;
+    }
+  }
+
+  // Print styles
+  @media print {
+    .table-header {
+      display: none;
+    }
+    
+    .ant-table-pagination {
+      display: none;
+    }
+    
+    .table-row--odd td {
+      background-color: transparent;
+    }
+  }
+}
+
+// Utility classes for common table customizations
+.table-compact {
+  .ant-table-cell {
+    padding: 8px;
+  }
+}
+
+.table-borderless {
+  .ant-table-cell {
+    border: none;
+  }
+}
+
+.table-no-hover {
+  .ant-table-tbody > tr:hover > td {
+    background-color: inherit;
+  }
+} 

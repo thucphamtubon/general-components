@@ -1,0 +1,103 @@
+/* Table Header Styles */
+.table-header {
+  margin-bottom: 16px;
+
+  &__live-region {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  &__search {
+    margin-bottom: 12px;
+  }
+
+  &__selection {
+    margin-bottom: 8px;
+  }
+
+  &__custom {
+    margin-bottom: 8px;
+  }
+
+  /* Remove bottom margin from last child */
+  &__search:last-child,
+  &__selection:last-child,
+  &__custom:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Compact layout for limited space */
+.table-header--compact {
+  margin-bottom: 12px;
+
+  .table-header__search {
+    margin-bottom: 8px;
+  }
+
+  .table-header__selection {
+    margin-bottom: 6px;
+  }
+
+  .table-header__custom {
+    margin-bottom: 6px;
+  }
+}
+
+/* Horizontal layout when space allows */
+.table-header--horizontal {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .table-header__search {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .table-header__selection {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .table-header__custom {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .table-header {
+    &--horizontal {
+      flex-direction: column;
+      gap: 12px;
+
+      .table-header__search {
+        min-width: unset;
+      }
+    }
+  }
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+} 

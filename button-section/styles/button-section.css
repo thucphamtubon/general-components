@@ -1,0 +1,382 @@
+/* Button Section Styles */
+
+/* Base button styles */
+.primary-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.secondary-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.danger-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.ghost-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.link-button {
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.loading-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.submit-button {
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.cancel-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+/* Action button styles */
+.action-button {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-button-add {
+  /* Specific styles for add action */
+}
+
+.action-button-edit {
+  /* Specific styles for edit action */
+}
+
+.action-button-view {
+  /* Specific styles for view action */
+}
+
+.action-button-delete {
+  /* Specific styles for delete action */
+}
+
+.action-button-export {
+  /* Specific styles for export action */
+}
+
+.action-button-import {
+  /* Specific styles for import action */
+}
+
+.action-button-refresh {
+  /* Specific styles for refresh action */
+}
+
+.action-button-search {
+  /* Specific styles for search action */
+}
+
+.action-button-filter {
+  /* Specific styles for filter action */
+}
+
+/* Hover effects */
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.danger-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+}
+
+.secondary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.icon-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+/* Focus styles */
+.primary-button:focus,
+.secondary-button:focus,
+.danger-button:focus,
+.ghost-button:focus,
+.loading-button:focus,
+.submit-button:focus,
+.cancel-button:focus,
+.action-button:focus {
+  outline: 2px solid rgba(24, 144, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.loading-button.ant-btn-loading {
+  pointer-events: none;
+}
+
+.submit-button.ant-btn-loading {
+  pointer-events: none;
+}
+
+/* Disabled state */
+.primary-button:disabled,
+.secondary-button:disabled,
+.danger-button:disabled,
+.ghost-button:disabled,
+.loading-button:disabled,
+.submit-button:disabled,
+.cancel-button:disabled,
+.action-button:disabled,
+.icon-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Size variations */
+.primary-button.ant-btn-sm,
+.secondary-button.ant-btn-sm,
+.danger-button.ant-btn-sm {
+  font-size: 12px;
+  padding: 4px 12px;
+  height: 28px;
+}
+
+.primary-button.ant-btn-lg,
+.secondary-button.ant-btn-lg,
+.danger-button.ant-btn-lg {
+  font-size: 16px;
+  padding: 8px 20px;
+  height: 44px;
+}
+
+/* Icon button sizes */
+.icon-button.ant-btn-sm {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+}
+
+.icon-button.ant-btn-lg {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .action-button,
+  .submit-button,
+  .cancel-button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  .icon-button {
+    min-width: 40px;
+    height: 40px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .secondary-button:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Group Button Styles */
+.group-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-button-default {
+  /* Default group styling */
+}
+
+.group-button-form-actions {
+  justify-content: flex-end;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 16px;
+}
+
+.group-button-table-actions {
+  justify-content: center;
+  align-items: center;
+}
+
+.group-button-modal-actions {
+  justify-content: flex-end;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.group-button-toolbar {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+/* Toolbar specific styles */
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-section-left {
+  justify-content: flex-start;
+}
+
+.toolbar-section-center {
+  justify-content: center;
+}
+
+.toolbar-section-right {
+  justify-content: flex-end;
+}
+
+.toolbar-responsive {
+  /* Responsive toolbar styles */
+}
+
+.toolbar-collapse-mobile {
+  /* Mobile collapse styles */
+}
+
+/* Form action group specific styles */
+.group-button-form-actions .ant-btn {
+  min-width: 80px;
+}
+
+.group-button-form-actions .ant-btn + .ant-btn {
+  margin-left: 8px;
+}
+
+/* Table action group specific styles */
+.group-button-table-actions .ant-btn {
+  margin: 0 2px;
+}
+
+.group-button-table-actions .ant-btn-sm {
+  padding: 0 8px;
+  height: 24px;
+  font-size: 12px;
+}
+
+/* Equal width buttons */
+.group-button .ant-btn[style*="flex: 1"] {
+  flex: 1;
+  text-align: center;
+}
+
+/* Responsive design for groups */
+@media (max-width: 768px) {
+  .group-button-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .group-button-form-actions .ant-btn {
+    width: 100%;
+    margin: 4px 0;
+  }
+  
+  .toolbar-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .toolbar-section {
+    justify-content: center;
+    margin: 4px 0;
+  }
+  
+  .toolbar-collapse-mobile .toolbar-section {
+    display: none;
+  }
+  
+  .toolbar-collapse-mobile .toolbar-section:first-child {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .group-button-table-actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .group-button-table-actions .ant-btn {
+    width: 100%;
+    margin: 2px 0;
+  }
+}
+
+/* Animation for loading states */
+@keyframes buttonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading-button.ant-btn-loading .ant-btn-loading-icon,
+.submit-button.ant-btn-loading .ant-btn-loading-icon {
+  animation: buttonPulse 1.5s ease-in-out infinite;
+}
+
+/* Hover effects for groups */
+.group-button:hover .ant-btn:not(:disabled):not(.ant-btn-loading) {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Focus management for groups */
+.group-button .ant-btn:focus {
+  z-index: 1;
+  position: relative;
+}

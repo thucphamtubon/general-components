@@ -1,0 +1,135 @@
+/* Table Selection Info Styles */
+.table-selection-info {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  &__count {
+    color: #0050b3;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  &__clear-button {
+    background: none;
+    border: none;
+    color: #1890ff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    white-space: nowrap;
+
+    &:hover:not(:disabled) {
+      color: #40a9ff;
+      background-color: rgba(24, 144, 255, 0.1);
+    }
+
+    &:focus {
+      outline: 2px solid #1890ff;
+      outline-offset: 1px;
+    }
+
+    &:active:not(:disabled) {
+      color: #096dd9;
+      background-color: rgba(24, 144, 255, 0.2);
+    }
+
+    &:disabled {
+      color: #d9d9d9;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Compact layout for small spaces */
+.table-selection-info--compact {
+  padding: 4px 8px;
+  font-size: 12px;
+  gap: 8px;
+
+  .table-selection-info__clear-button {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+}
+
+/* Different color themes */
+.table-selection-info--success {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+
+  .table-selection-info__count {
+    color: #389e0d;
+  }
+
+  .table-selection-info__clear-button {
+    color: #52c41a;
+
+    &:hover:not(:disabled) {
+      color: #73d13d;
+      background-color: rgba(82, 196, 26, 0.1);
+    }
+  }
+}
+
+.table-selection-info--warning {
+  background-color: #fffbe6;
+  border-color: #ffe58f;
+
+  .table-selection-info__count {
+    color: #d48806;
+  }
+
+  .table-selection-info__clear-button {
+    color: #faad14;
+
+    &:hover:not(:disabled) {
+      color: #ffc53d;
+      background-color: rgba(250, 173, 20, 0.1);
+    }
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .table-selection-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    &__clear-button {
+      align-self: flex-end;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .table-selection-info {
+    border-width: 2px;
+    
+    &__clear-button:focus {
+      outline: 3px solid;
+      outline-offset: 2px;
+    }
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .table-selection-info {
+    &__clear-button {
+      transition: none;
+    }
+  }
+} 

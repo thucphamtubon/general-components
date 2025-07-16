@@ -1,0 +1,648 @@
+/* Base styles for table input components */
+.table-input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  outline: none;
+  background-color: #fff;
+  color: #000000d9;
+}
+
+.table-input:focus {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.table-input:hover:not(:disabled):not(:focus) {
+  border-color: #40a9ff;
+}
+
+.table-input:disabled {
+  background-color: #f5f5f5;
+  color: #00000040;
+  cursor: not-allowed;
+  border-color: #d9d9d9;
+}
+
+.table-input.error {
+  border-color: #ff4d4f;
+}
+
+.table-input.error:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* Size variants */
+.table-input--small {
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.table-input--large {
+  padding: 6px 12px;
+  font-size: 16px;
+}
+
+/* Text input specific */
+.table-input-text {
+  /* Inherits from .table-input */
+}
+
+/* Number input specific */
+.table-input-number {
+  text-align: right;
+}
+
+.table-input-number::-webkit-outer-spin-button,
+.table-input-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.table-input-number[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Select input specific */
+.table-input-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  padding-right: 28px;
+}
+
+.table-input-select:focus {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%231890ff' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+}
+
+/* Date input specific */
+.table-input-date {
+  /* Inherits from .table-input */
+}
+
+/* Textarea specific */
+.table-input-textarea {
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+}
+
+.table-input-textarea.no-resize {
+  resize: none;
+}
+
+/* Switch/Checkbox specific */
+.table-input-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+  margin: 0;
+}
+
+.table-input-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.table-input-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.2s;
+  border-radius: 22px;
+}
+
+.table-input-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+
+.table-input-switch input:checked + .slider {
+  background-color: #1890ff;
+}
+
+.table-input-switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.table-input-switch input:disabled + .slider {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.table-input-switch input:disabled + .slider:before {
+  background-color: #ccc;
+}
+
+/* Error message */
+.table-input-error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Loading state */
+.table-input--loading {
+  background-image: linear-gradient(90deg, #f0f0f0 25%, transparent 25%, transparent 50%, #f0f0f0 50%, #f0f0f0 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 0;
+  }
+}
+
+/* Minimal theme */
+.table-input--minimal {
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
+  border-radius: 0;
+  padding: 4px 0;
+}
+
+.table-input--minimal:focus {
+  border-bottom-color: #1890ff;
+  box-shadow: 0 1px 0 0 #1890ff;
+}
+
+/* Bordered theme */
+.table-input--bordered {
+  border: 2px solid #d9d9d9;
+}
+
+.table-input--bordered:focus {
+  border-color: #1890ff;
+  box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .table-input--small {
+    font-size: 14px;
+  }
+}
+
+/* Select Dropdown Styles */
+.table-input-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.table-input-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-input-select.disabled {
+  cursor: not-allowed;
+}
+
+.table-input-select-value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-input-select-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  color: #999;
+  font-size: 16px;
+}
+
+.table-input-select-clear:hover {
+  color: #666;
+}
+
+.table-input-select-arrow {
+  margin-left: 4px;
+  color: #999;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.table-input-select.open .table-input-select-arrow {
+  transform: rotate(180deg);
+}
+
+.table-input-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.table-input-select-search {
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-input-select-options {
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.table-input-select-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-input-select-option:hover {
+  background-color: #f5f5f5;
+}
+
+.table-input-select-option.selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.table-input-select-option.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.table-input-select-option--empty {
+  color: #999;
+  font-style: italic;
+  cursor: default;
+}
+
+.table-input-select-checkbox {
+  margin: 0;
+}
+
+/* Date Input Styles */
+.table-input-date-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.table-input-date-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.table-input-date-calendar-button {
+  position: absolute;
+  right: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.table-input-date-calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px;
+  min-width: 280px;
+}
+
+.table-input-date-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.table-input-date-nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.table-input-date-nav-button:hover {
+  background-color: #f5f5f5;
+}
+
+.table-input-date-month-year {
+  font-weight: 500;
+}
+
+.table-input-date-calendar-grid {
+  width: 100%;
+}
+
+.table-input-date-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.table-input-date-weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  padding: 4px;
+}
+
+.table-input-date-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.table-input-date-day {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.table-input-date-day:hover {
+  background-color: #f5f5f5;
+}
+
+.table-input-date-day.other-month {
+  color: #ccc;
+}
+
+.table-input-date-day.selected {
+  background-color: #1890ff;
+  color: white;
+}
+
+.table-input-date-day.today {
+  border: 1px solid #1890ff;
+}
+
+.table-input-date-day.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.table-input-date-time-picker {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* TextArea Styles */
+.table-input-textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.table-input-textarea {
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+}
+
+.table-input-textarea.auto-resize {
+  resize: none;
+  overflow: hidden;
+}
+
+.table-input-textarea.resize-none {
+  resize: none;
+}
+
+.table-input-textarea.resize-horizontal {
+  resize: horizontal;
+}
+
+.table-input-textarea.resize-both {
+  resize: both;
+}
+
+.table-input-textarea-character-count {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  font-size: 12px;
+  color: #999;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.table-input-textarea-character-count .over-limit {
+  color: #ff4d4f;
+}
+
+.table-input-textarea-character-count .separator {
+  margin: 0 2px;
+}
+
+/* Switch Styles */
+.table-input-switch-wrapper {
+  display: inline-block;
+}
+
+.table-input-switch {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-input-switch.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.table-input-switch-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.table-input-switch-slider {
+  position: relative;
+  display: block;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.table-input-switch--small .table-input-switch-slider {
+  width: 32px;
+  height: 16px;
+}
+
+.table-input-switch--medium .table-input-switch-slider {
+  width: 44px;
+  height: 22px;
+}
+
+.table-input-switch--large .table-input-switch-slider {
+  width: 56px;
+  height: 28px;
+}
+
+.table-input-switch.checked .table-input-switch-slider {
+  background-color: #1890ff;
+}
+
+.table-input-switch-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-input-switch--small .table-input-switch-handle {
+  width: 12px;
+  height: 12px;
+}
+
+.table-input-switch--medium .table-input-switch-handle {
+  width: 18px;
+  height: 18px;
+}
+
+.table-input-switch--large .table-input-switch-handle {
+  width: 24px;
+  height: 24px;
+}
+
+.table-input-switch.checked .table-input-switch--small .table-input-switch-handle {
+  transform: translateX(16px);
+}
+
+.table-input-switch.checked .table-input-switch--medium .table-input-switch-handle {
+  transform: translateX(22px);
+}
+
+.table-input-switch.checked .table-input-switch--large .table-input-switch-handle {
+  transform: translateX(28px);
+}
+
+.table-input-switch-loading-icon {
+  font-size: 10px;
+  animation: spin 1s linear infinite;
+}
+
+.table-input-switch-inner {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: white;
+  font-weight: 500;
+}
+
+.table-input-switch--small .table-input-switch-inner {
+  font-size: 10px;
+}
+
+.table-input-switch.checked .table-input-switch-inner {
+  left: 6px;
+}
+
+.table-input-switch:not(.checked) .table-input-switch-inner {
+  right: 6px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error Message Styles */
+.table-input-error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .table-input {
+    border-width: 2px;
+  }
+  
+  .table-input:focus {
+    outline: 2px solid;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .table-input,
+  .table-input-select-arrow,
+  .table-input-switch-slider,
+  .table-input-switch-handle,
+  .table-input-switch .slider,
+  .table-input-switch .slider:before {
+    transition: none;
+  }
+  
+  .table-input--loading,
+  .table-input-switch-loading-icon {
+    animation: none;
+  }
+}
