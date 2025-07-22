@@ -1,0 +1,168 @@
+.tuy-chon-table-modal {
+  // Đảm bảo modal luôn nằm trên cùng, không bị pagination che khuất
+  z-index: 10002 !important;
+  
+  .tuy-chon-modal-content {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.hoverClassBG {
+    transition: all 0.2s ease-in-out;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: rgba(24, 144, 255, 0.06);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      background-color: rgba(24, 144, 255, 0.1);
+    }
+
+    &:focus {
+      outline: 2px solid #1890ff;
+      outline-offset: 2px;
+      background-color: rgba(24, 144, 255, 0.06);
+    }
+  }
+
+  .export-section {
+    .ant-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .loading-overlay {
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .export-section,
+  .search-mode-section,
+  .columns-section {
+    margin-bottom: 8px;
+  }
+
+  .ant-divider {
+    margin: 16px 0;
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .modal-title-icon {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .columns-section {
+    .ant-switch {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+      }
+    }
+  }
+
+  .search-mode-section {
+    .ant-select {
+      transition: all 0.3s ease;
+
+      &:hover .ant-select-selector {
+        border-color: #40a9ff;
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+      }
+    }
+  }
+
+  .columns-header {
+    .ant-btn {
+      margin-left: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .export-section .ant-btn {
+      height: 50px;
+      font-size: 12px;
+    }
+    
+    .modal-title-text {
+      font-size: 14px;
+    }
+  }
+
+  @media (prefers-contrast: high) {
+    &.hoverClassBG:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .export-section .ant-btn {
+      border-width: 2px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tuy-chon-modal-content,
+    &.hoverClassBG,
+    .export-section .ant-btn,
+    .modal-title-icon,
+    .columns-section .ant-switch,
+    .search-mode-section .ant-select,
+    .columns-header .ant-btn {
+      transition: none;
+    }
+    
+    .export-section .ant-btn:hover:not(:disabled) {
+      transform: none;
+    }
+    
+    .columns-header .ant-btn:hover {
+      transform: none;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &.hoverClassBG:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    
+    .export-section .ant-btn {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .ant-divider {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+  }
+}

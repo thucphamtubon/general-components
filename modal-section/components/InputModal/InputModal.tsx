@@ -273,7 +273,7 @@ InputModal.show = (props: Omit<IInputModalProps, 'visible'>) => {
     onOk: async () => {
       const error = validateInput(inputValue);
       if (error) {
-        validationError = error;
+        // validationError = error;
         // Display validation error (you might want to update the modal content to show this)
         console.warn('Validation error:', error);
         // Return false to prevent modal from closing

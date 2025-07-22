@@ -1,7 +1,7 @@
 import { InfoCircleOutlined } from '@ant-design/icons'
-import { Button, Modal, Typography } from 'antd'
+import { Modal, Typography } from 'antd'
 import React from 'react'
-import { IWidthModalProps, IModalComponent } from '../../shared'
+import { IModalComponent, IWidthModalProps } from '../../shared'
 
 const { Paragraph } = Typography
 
@@ -24,7 +24,7 @@ export interface IMessageModalProps extends IWidthModalProps {
 /**
  * MessageModal component interface
  */
-interface IMessageModalComponent extends IModalComponent<IMessageModalProps> {}
+interface IMessageModalComponent extends IModalComponent<IMessageModalProps> { }
 
 // Default texts
 const defaultTexts = {
@@ -67,7 +67,7 @@ const MessageModal: IMessageModalComponent = ({
         const modalElement = document.querySelector('.message-modal')
         if (modalElement) {
           modalElement.setAttribute('data-testid', 'message-modal')
-          
+
           // Add data-testid to buttons
           const okButton = modalElement.querySelector('.ant-btn-primary')
           if (okButton) {
@@ -100,10 +100,10 @@ const MessageModal: IMessageModalComponent = ({
             </div>
           )}
         </div>
-        
+
         {description && (
-          <div style={{ 
-            borderTop: '1px solid #f0f0f0', 
+          <div style={{
+            borderTop: '1px solid #f0f0f0',
             paddingTop: '16px',
             color: '#666',
             fontSize: '14px'
@@ -163,10 +163,10 @@ MessageModal.show = (props: Omit<IMessageModalProps, 'visible'>) => {
             </div>
           )}
         </div>
-        
+
         {props.description && (
-          <div style={{ 
-            borderTop: '1px solid #f0f0f0', 
+          <div style={{
+            borderTop: '1px solid #f0f0f0',
             paddingTop: '16px',
             color: '#666',
             fontSize: '14px'
@@ -197,7 +197,7 @@ MessageModal.show = (props: Omit<IMessageModalProps, 'visible'>) => {
     const modalElement = document.querySelector('.message-modal')
     if (modalElement) {
       modalElement.setAttribute('data-testid', 'message-modal')
-      
+
       // Add data-testid to OK button
       const okButton = modalElement.querySelector('.ant-btn-primary')
       if (okButton) {

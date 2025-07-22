@@ -1,3 +1,4 @@
+import type { ColumnType, SortOrder, TableLocale } from 'antd/lib/table/interface';
 import React, { Dispatch } from "react";
 
 // Core types for the table module
@@ -7,23 +8,12 @@ export interface IConstantItem {
   [key: string]: any;
 }
 
-export interface ITableColumn {
-  id: string;
-  name: string;
-  isSearch?: boolean;
-  render?: (cell: any, row: any, index: number, props?: any) => React.ReactNode;
+/**
+ * Interface representing a table column using Ant Design's ColumnType
+ */
+export interface ITableColumn extends ColumnType<any> {
+  // Nested columns structure (already part of ColumnType but needs to be explicitly typed)
   children?: ITableColumn[];
-  classNameSearch?: string;
-  colSpan?: number;
-  cellClassName?: string;
-  valueStyle?: React.CSSProperties;
-  valueClassName?: string;
-  width?: number | string;
-  fixed?: 'left' | 'right' | boolean;
-  align?: 'left' | 'right' | 'center';
-  sorter?: boolean | ((a: any, b: any) => number);
-  filters?: Array<{ text: string; value: any }>;
-  onFilter?: (value: any, record: any) => boolean;
 }
 
 export interface IConstants {
@@ -51,7 +41,7 @@ export interface ActionsReturn {
   onDeleteAsync?: (payload: DeletePayload) => (dispatch: Dispatch<any>) => Promise<any>;
 }
 
-// Internal state types
+// Internal state types aligned with Ant Design Table
 export interface TableState {
   selectedRowKeys: Record<string, React.Key[]>;
   [key: string]: any;
@@ -63,55 +53,79 @@ export interface AppState {
   [key: string]: any;
 }
 
-// State for useTable hook
+/**
+ * State interface for useTable hook aligned with Ant Design Table
+ */
 export interface UseTableState {
+  // Search state
   searchText: string;
-  filters: Record<string, any>;
-  sorter: any;
+  
+  // Filter state - aligns with Ant Design's FilterValue type
+  filters: Record<string, (React.Key | boolean)[]>;
+  
+  // Sorter state - aligns with Ant Design's SorterResult
+  sorter: {
+    column?: ITableColumn;
+    order?: SortOrder;
+    field?: React.Key | readonly React.Key[]; // field refers to dataIndex in Ant Design
+    columnKey?: React.Key;
+  } | null;
+  
+  // Pagination state - aligns with Ant Design's TablePaginationConfig
   pagination: {
     current: number;
     pageSize: number;
     total: number;
+    position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
+    showSizeChanger?: boolean;
+    showQuickJumper?: boolean;
+    showTotal?: (total: number, range: [number, number]) => React.ReactNode;
   };
+  
+  // Selection state
   selectedRowKeys: React.Key[];
   selectedRows: any[];
+  
+  // Loading state
   loading: boolean;
 }
 
-// Table context types
+/**
+ * Table context types aligned with Ant Design Table API
+ */
 export interface TableContextState {
-  setFilteredInfo?: (values?: any) => void;
-  setSortedInfo?: (values?: any) => void;
-  setSearchText?: any;
+  setFilteredInfo?: (values?: Record<string, (React.Key | boolean)[]>) => void;
+  setSortedInfo?: (values?: UseTableState['sorter']) => void;
+  setSearchText?: (text: string) => void;
 }
 
 export interface TableContextType {
   // Legacy methods
-  onClearSearchText: (modalId: string) => void;
-  setSearchSortFilter: (modalId: any, methods: TableContextState) => void;
-  setTableFilters: (tableId: string, tableFilters: any) => void;
+  onClearSearchText: (tableId: string) => void;
+  setSearchSortFilter: (tableId: string, methods: TableContextState) => void;
+  setTableFilters: (tableId: string, tableFilters: Record<string, (React.Key | boolean)[]>) => void;
 
   // Search methods
   setSearchText: (tableId: string, searchText: string) => void;
   getSearchText: (tableId: string) => string;
   
-  // Filter methods
-  setFilters: (tableId: string, filters: Record<string, any>) => void;
-  getFilters: (tableId: string) => Record<string, any>;
+  // Filter methods - updated to align with Ant Design's FilterValue type
+  setFilters: (tableId: string, filters: Record<string, (React.Key | boolean)[]>) => void;
+  getFilters: (tableId: string) => Record<string, (React.Key | boolean)[]>;
   
-  // Sorter methods
-  setSorter: (tableId: string, sorter: any) => void;
-  getSorter: (tableId: string) => any;
+  // Sorter methods - updated to align with Ant Design's SorterResult
+  setSorter: (tableId: string, sorter: UseTableState['sorter']) => void;
+  getSorter: (tableId: string) => UseTableState['sorter'];
   
-  // Pagination methods
+  // Pagination methods - aligned with Ant Design's TablePaginationConfig
   setPagination: (tableId: string, pagination: Partial<UseTableState['pagination']>) => void;
   getPagination: (tableId: string) => UseTableState['pagination'];
   
-  // Selection methods
+  // Selection methods - aligned with Ant Design's rowSelection
   setSelectedTable: (tableId: string, selectedRowKeys: React.Key[], selectedRows: any[]) => void;
-  getSelectedTable: (modalId?: string, dataSource?: any[]) => any[];
+  getSelectedTable: (tableId?: string, dataSource?: any[]) => any[];
   getSelectedRowKeys: (tableId: string) => React.Key[];
-  clearSelectedTable: (modalId?: string) => void;
+  clearSelectedTable: (tableId?: string) => void;
   
   // Loading methods
   setLoading: (tableId: string, loading: boolean) => void;
@@ -125,19 +139,52 @@ export interface TableContextType {
   updateTable: (tableId: string, updates: Partial<UseTableState>) => void;
 }
 
-// Hook types
+/**
+ * Hook return type to provide Table context functionality
+ */
 export interface UseTableReturn extends TableContextType {}
 
-// Input options type
+/**
+ * Input options type for handling path-based operations
+ */
 export interface InputOptions {
   deletedPaths?: any[];
   activePaths?: any[];
   [key: string]: any;
 }
 
-// App dispatch and state types (internal implementations)
+/**
+ * Application dispatch and state types for Redux integration
+ */
 export type AppDispatch = Dispatch<any>;
 export type AppStateSelector<T> = (state: AppState) => T;
 
-// Utility types
+/**
+ * Utility types
+ */
 export type Noop = () => void;
+
+/**
+ * Table change handler type definition aligned with Ant Design Table
+ */
+export type OnTableChange = (
+  pagination: UseTableState['pagination'],
+  filters: Record<string, (React.Key | boolean)[]>,
+  sorter: UseTableState['sorter'],
+  extra: { currentDataSource: any[]; action: 'paginate' | 'sort' | 'filter' }
+) => void;
+
+/**
+ * Row selection change handler type definition aligned with Ant Design Table
+ */
+export type OnSelectChange = (selectedRowKeys: React.Key[], selectedRows: any[]) => void;
+
+/**
+ * Table locale customization aligned with Ant Design TableLocale
+ */
+export interface EnhancedTableLocale extends TableLocale {
+  // Add any custom locale properties here
+  searchPlaceholder?: string;
+  selectionText?: string;
+  clearSelectionText?: string;
+}

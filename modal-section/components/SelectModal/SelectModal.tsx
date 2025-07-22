@@ -29,7 +29,7 @@ export interface ISelectModalProps extends IValidatableModalProps {
 /**
  * SelectModal component interface
  */
-interface ISelectModalComponent extends IModalComponent<ISelectModalProps> {}
+interface ISelectModalComponent extends IModalComponent<ISelectModalProps> { }
 
 // Default texts
 const defaultTexts = {
@@ -76,19 +76,19 @@ const SelectModal: ISelectModalComponent = ({
     if (visible) {
       setSelectedValue(defaultValue)
       setValidationError(null)
-      
+
       // Add data-testid after modal renders
       setTimeout(() => {
         const modalElement = document.querySelector('.select-modal')
         if (modalElement) {
           modalElement.setAttribute('data-testid', 'select-modal')
-          
+
           // Add data-testid to buttons
           const okButton = modalElement.querySelector('.ant-btn-primary')
           if (okButton) {
             okButton.setAttribute('data-testid', 'select-modal-ok-btn')
           }
-          
+
           const cancelButton = modalElement.querySelector('.ant-btn:not(.ant-btn-primary)')
           if (cancelButton) {
             cancelButton.setAttribute('data-testid', 'select-modal-cancel-btn')
@@ -139,7 +139,7 @@ const SelectModal: ISelectModalComponent = ({
       setValidationError(error)
       return
     }
-    
+
     if (selectedValue !== undefined && selectedValue !== null) {
       try {
         await handleConfirm(selectedValue)
@@ -172,7 +172,7 @@ const SelectModal: ISelectModalComponent = ({
             {required && <span style={{ color: 'red' }}> *</span>}
           </div>
         )}
-        
+
         <Select
           style={{ width: '100%' }}
           placeholder={placeholder}
@@ -185,8 +185,8 @@ const SelectModal: ISelectModalComponent = ({
           data-testid="select-modal-select"
         >
           {options.map(option => (
-            <Option 
-              key={option.value} 
+            <Option
+              key={option.value}
               value={option.value}
               disabled={option.disabled}
               data-testid={`select-modal-option-${option.value}`}
@@ -195,7 +195,7 @@ const SelectModal: ISelectModalComponent = ({
             </Option>
           ))}
         </Select>
-        
+
         {validationError && (
           <div style={{ color: 'red', marginTop: '4px', fontSize: '12px' }} data-testid="select-modal-error">
             {validationError}
@@ -232,7 +232,7 @@ SelectModal.show = (props: Omit<ISelectModalProps, 'visible'>) => {
           {props.required && <span style={{ color: 'red' }}> *</span>}
         </div>
       )}
-      
+
       <Select
         style={{ width: '100%' }}
         placeholder={props.placeholder || 'Chọn một tùy chọn...'}
@@ -247,8 +247,8 @@ SelectModal.show = (props: Omit<ISelectModalProps, 'visible'>) => {
         data-testid="select-modal-select"
       >
         {props.options.map(option => (
-          <Option 
-            key={option.value} 
+          <Option
+            key={option.value}
             value={option.value}
             disabled={option.disabled}
             data-testid={`select-modal-option-${option.value}`}
@@ -273,10 +273,10 @@ SelectModal.show = (props: Omit<ISelectModalProps, 'visible'>) => {
     onOk: async () => {
       const error = validateSelection(selectedValue)
       if (error) {
-        validationError = error
+        // validationError = error
         throw new Error(error) // Prevent modal from closing
       }
-      
+
       if (selectedValue !== undefined && selectedValue !== null) {
         const selectedOption = props.options.find(option => option.value === selectedValue)
         if (selectedOption) {
@@ -298,13 +298,13 @@ SelectModal.show = (props: Omit<ISelectModalProps, 'visible'>) => {
     const modalElement = document.querySelector('.select-modal')
     if (modalElement) {
       modalElement.setAttribute('data-testid', 'select-modal')
-      
+
       // Add data-testid to buttons
       const okButton = modalElement.querySelector('.ant-btn-primary')
       if (okButton) {
         okButton.setAttribute('data-testid', 'select-modal-ok-btn')
       }
-      
+
       const cancelButton = modalElement.querySelector('.ant-btn:not(.ant-btn-primary)')
       if (cancelButton) {
         cancelButton.setAttribute('data-testid', 'select-modal-cancel-btn')
