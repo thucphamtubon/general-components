@@ -1,9 +1,16 @@
 import { useCallback, useEffect } from 'react';
 import { getTablePaginationState, useTablePaginationStore } from '../stores/useTablePaginationStore';
-import { TablePaginationConfig, UseTablePaginationReturn } from '../types/table.types';
+import { TablePaginationConfig, UseTablePaginationReturn, PaginationState } from '../types';
 import { DEFAULT_PAGINATION } from '../constants';
 
-export const useTablePagination = (tableId: string): UseTablePaginationReturn => {
+export interface TablePaginationOptions {
+  defaultPagination?: PaginationState;
+}
+
+export const useTablePagination = (tableId: string, options: TablePaginationOptions = {}): UseTablePaginationReturn => {
+  const {
+    defaultPagination
+  } = options;
 
   const {
     setPaginationConfig,
@@ -12,15 +19,16 @@ export const useTablePagination = (tableId: string): UseTablePaginationReturn =>
 
   useEffect(() => {
     const persistedState = getTablePaginationState(tableId);
-    const initialState = { ...DEFAULT_PAGINATION, ...persistedState.paginationConfig };
+    const initialState = { ...DEFAULT_PAGINATION, ...defaultPagination, ...persistedState.paginationConfig };
 
     setPaginationConfig(tableId, initialState);
-  }, [tableId]);
+  }, [tableId, defaultPagination]);
 
   const state = useTablePaginationStore(state => ({
     paginationConfig: state.paginationConfig[tableId] || DEFAULT_PAGINATION,
   }));
 
+  // Xử lý thay đổi trạng thái phân trang
   const handlePaginationChange = useCallback((page: number, pageSize?: number) => {
     if (
       state.paginationConfig.current === page &&
@@ -37,9 +45,15 @@ export const useTablePagination = (tableId: string): UseTablePaginationReturn =>
     });
   }, [tableId, state.paginationConfig, setPaginationConfig]);
 
+  // Đặt lại cấu hình phân trang về mặc định
   const resetPaginationConfig = useCallback(() => {
     resetStorePagination(tableId, DEFAULT_PAGINATION);
   }, [tableId, resetStorePagination]);
+  
+  // Xử lý xóa tất cả cài đặt bảng liên quan đến phân trang
+  const handleClearAll = useCallback(() => {
+    resetPaginationConfig();
+  }, [resetPaginationConfig]);
 
   const paginationConfig: TablePaginationConfig = {
     ...state.paginationConfig,

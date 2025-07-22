@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { PaginationState } from '../types/table.types';
+import { PaginationState } from '../types';
 import { DEFAULT_PAGINATION } from '../constants';
 
 interface TablePaginationStore {

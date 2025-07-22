@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { SearchMode } from '../tuy-chon-table';
 import { DEFAULT_SEARCH } from '../constants';
+import { SearchMode } from '../types';
 
 export interface SearchState {
   searchTerm: string;

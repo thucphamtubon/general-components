@@ -1,71 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterDropdownProps } from 'antd/lib/table/interface';
 import { Key } from 'react';
-import { useFilterState } from './hooks';
 import { FilterDropdownUI } from './components';
 import { CreateDropdownFilterOptions, FilterOption, StatusDropdownFilterOptions } from './types';
-
-const FilterDropdown: React.FC<FilterDropdownProps & {
-  options: FilterOption[];
-  selectAllText: string;
-  clearText: string;
-  confirmText: string;
-  initialFilterValue: string[];
-  updateFilterValue: (keys: string[]) => void;
-  clearFilter: () => void;
-}> = ({
-  options,
-  selectAllText,
-  clearText,
-  confirmText,
-  setSelectedKeys,
-  confirm,
-  clearFilters,
-  initialFilterValue,
-  updateFilterValue,
-  clearFilter
-}) => {
-    const [localSelectedKeys, setLocalSelectedKeys] = React.useState<string[]>(initialFilterValue);
-
-    // Update local state when initialFilterValue changes from parent
-    React.useEffect(() => {
-      setLocalSelectedKeys(initialFilterValue);
-    }, [initialFilterValue]);
-
-    const handleConfirm = () => {
-      // Only update parent state on confirm
-      setSelectedKeys(localSelectedKeys);
-      updateFilterValue(localSelectedKeys);
-      confirm();
-    };
-
-    const handleClear = () => {
-      clearFilter();
-      clearFilters?.();
-    };
-
-    return (
-      <FilterDropdownUI
-        options={options}
-        selectedKeys={localSelectedKeys}
-        onSelectKeysChange={setLocalSelectedKeys}
-        onConfirm={handleConfirm}
-        onClear={handleClear}
-        selectAllText={selectAllText}
-        clearText={clearText}
-        confirmText={confirmText}
-      />
-    );
-  };
+import { useTableFiltersAndSorterStore } from '../../stores/useTableFiltersAndSorterStore';
 
 interface FilterDropdownWrapperProps extends FilterDropdownProps {
   options: FilterOption[];
   selectAllText: string;
   clearText: string;
   confirmText: string;
-  tableId?: string;
-  columnKey?: string;
-  initialFilterValue?: string[];
+  tableId: string;
+  columnKey: string;
 }
 
 const FilterDropdownWrapper: React.FC<FilterDropdownWrapperProps> = ({
@@ -75,25 +21,51 @@ const FilterDropdownWrapper: React.FC<FilterDropdownWrapperProps> = ({
   confirmText,
   tableId,
   columnKey,
-  initialFilterValue = [],
-  ...props
+  setSelectedKeys,
+  confirm,
+  clearFilters,
 }) => {
-  const { filterValue, updateFilterValue, clearFilter } = useFilterState(
-    tableId,
-    columnKey,
-    initialFilterValue
-  );
+  const tableStore = useTableFiltersAndSorterStore();
+
+  const storeFilterValue = tableId && columnKey ? tableStore.getColumnFilterValue(tableId, columnKey) : undefined;
+
+  const [selectedKeys, setLocalSelectedKeys] = useState<string[]>(storeFilterValue || []);
+
+  useEffect(() => {
+    setLocalSelectedKeys(storeFilterValue || []);
+  }, [storeFilterValue]);
+
+  const handleConfirm = () => {
+    setSelectedKeys(selectedKeys);
+
+    if (tableId && columnKey) {
+      tableStore.setColumnFilterValue(tableId, columnKey, selectedKeys);
+    }
+
+    confirm();
+  };
+
+  const handleClear = () => {
+    setLocalSelectedKeys([]);
+
+    if (tableId && columnKey) {
+      tableStore.clearColumnFilter(tableId, columnKey);
+    }
+
+    clearFilters?.();
+    confirm();
+  };
 
   return (
-    <FilterDropdown
-      {...props}
+    <FilterDropdownUI
       options={options}
+      selectedKeys={selectedKeys}
+      onSelectKeysChange={setLocalSelectedKeys}
+      onConfirm={handleConfirm}
+      onClear={handleClear}
       selectAllText={selectAllText}
       clearText={clearText}
       confirmText={confirmText}
-      initialFilterValue={Array.isArray(filterValue) ? filterValue : []}
-      updateFilterValue={updateFilterValue}
-      clearFilter={clearFilter}
     />
   );
 };
@@ -106,7 +78,7 @@ export const createDropdownFilter = ({
   filteredValue = [],
   tableId,
   columnKey,
-}: CreateDropdownFilterOptions & { tableId?: string; columnKey?: string }) => {
+}: CreateDropdownFilterOptions & { tableId: string; columnKey: string }) => {
   return {
     filterDropdown: (props: FilterDropdownProps) => (
       <FilterDropdownWrapper
@@ -117,7 +89,6 @@ export const createDropdownFilter = ({
         confirmText={confirmText}
         tableId={tableId}
         columnKey={columnKey}
-        initialFilterValue={filteredValue}
       />
     ),
     onFilter: (value: boolean | Key, record: any) => {
@@ -129,8 +100,8 @@ export const createDropdownFilter = ({
   };
 };
 
-export const createStatusDropdownFilter = (statusOptions: FilterOption[], options?: StatusDropdownFilterOptions) => {
-  const { filteredValue, tableId, columnKey, ...restOptions } = options || {};
+export const createStatusDropdownFilter = (statusOptions: FilterOption[], options: StatusDropdownFilterOptions) => {
+  const { filteredValue, tableId, columnKey, options: _, ...restOptions } = options || {};
 
   return createDropdownFilter({
     options: statusOptions,

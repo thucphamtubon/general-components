@@ -1,10 +1,5 @@
 import type { ColumnsType } from 'antd/es/table';
-
-export enum SearchMode {
-  ExactMatch = 'exact',
-  CaseInsensitive = 'caseInsensitive',
-  AccentInsensitive = 'accentInsensitive'
-}
+import { SearchMode } from '../types';
 
 export interface TuyChonModalProps {
   visible: boolean;

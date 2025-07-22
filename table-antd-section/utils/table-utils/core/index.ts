@@ -3,7 +3,7 @@
  */
 
 import { ColumnGroupType, ColumnsType, ColumnType } from 'antd/lib/table';
-import { TableRecord } from '../types';
+import { TableRecord } from '../../../types';
 
 // Type guard for column with children
 function hasChildren<T>(column: ColumnType<T> | ColumnGroupType<T>): column is ColumnGroupType<T> {
@@ -11,9 +11,9 @@ function hasChildren<T>(column: ColumnType<T> | ColumnGroupType<T>): column is C
 }
 
 /**
- * Lọc các cột theo breakpoint
+ * Lọc các cột theo breakpoint (loại trừ)
  */
-export const getResponsiveColumns = <T extends TableRecord = TableRecord>(
+export const filterColumnsByBreakpointExclusion = <T extends TableRecord = TableRecord>(
   columns: ColumnsType<T>,
   breakpoint: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 ): ColumnsType<T> => {
@@ -26,7 +26,7 @@ export const getResponsiveColumns = <T extends TableRecord = TableRecord>(
     .map(column => {
       const newColumn = { ...column };
       if (hasChildren(column)) {
-        (newColumn as ColumnGroupType<T>).children = getResponsiveColumns(column.children, breakpoint);
+        (newColumn as ColumnGroupType<T>).children = filterColumnsByBreakpointExclusion(column.children, breakpoint);
       }
       return newColumn;
     });

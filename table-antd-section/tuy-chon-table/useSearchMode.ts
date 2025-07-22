@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SearchMode } from './types';
+import { SearchMode } from '../types';
 
 // Constants moved outside component to prevent recreation
 const SEARCH_MODE_OPTIONS = [

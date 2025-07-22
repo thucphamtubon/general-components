@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Tooltip, Typography } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { SearchMode } from './types';
+import { SearchMode } from '../types';
 import { MODAL_CONFIG, MODAL_STYLES, SEARCH_MODE_DESCRIPTIONS } from './constants';
 
 const { Title } = Typography;

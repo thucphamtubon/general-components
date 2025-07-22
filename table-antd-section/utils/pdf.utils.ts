@@ -2,7 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions, TableCell } from 'pdfmake/interfaces';
 import { PDF_CONSTANTS } from '../constants';
-import { PdfOrientation, PdfPageSize } from '../types/table.types';
+import { PdfOrientation, PdfPageSize } from '../types';
 
 export const initPdfMake = (): void => {
   if (!pdfMake.vfs) {

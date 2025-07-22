@@ -7,11 +7,11 @@ import { ExportSection } from './ExportSection';
 import { SearchModeSection } from './SearchModeSection';
 import './TuyChonTable.modal.less';
 import type { TuyChonModalProps } from './types';
-import { SearchMode } from './types';
 import { useColumnVisibility } from './useColumnVisibility';
 import { useDraggableModal } from './useDraggableModal';
 import { useSearchMode } from './useSearchMode';
 import { useTableModalPositionStore } from '../stores/useTableModalPositionStore';
+import { SearchMode } from '../types';
 
 const { Text } = Typography;
 

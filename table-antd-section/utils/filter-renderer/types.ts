@@ -25,7 +25,7 @@ export interface FilterDropdownUIProps {
 }
 
 export interface StatusDropdownFilterOptions extends Omit<CreateDropdownFilterOptions, 'filteredValue'> {
-  filteredValue?: string[];
-  tableId?: string;
-  columnKey?: string;
+  filteredValue: string[];
+  tableId: string;
+  columnKey: string;
 }

@@ -1,5 +1,5 @@
 import { Col, Pagination, Row } from 'antd';
-import { TablePaginationConfig } from '../types/table.types';
+import { TablePaginationConfig } from '../types';
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_PAGINATION } from '../constants';
 
 interface TablePaginationProps {
@@ -37,13 +37,13 @@ export const TablePagination = ({ pagination, loading = false, handleTableChange
       style={{
         position: 'fixed',
         bottom: 0,
-        left: 0,
+        left: '200px', /* Điều chỉnh left theo chiều rộng của sidebar */
         right: 0,
         padding: '10px 24px',
         backgroundColor: '#fff',
         borderTop: '1px solid #f0f0f0',
         boxShadow: '0 -2px 8px rgba(0,0,0,0.06)',
-        zIndex: 1000,
+        zIndex: 100,
       }}
     >
       <Row className="table-pagination-row" gutter={[16, 16]} align="middle" justify="space-between">

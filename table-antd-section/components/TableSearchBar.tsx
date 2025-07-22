@@ -4,7 +4,8 @@ import type { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useMediaQuery } from 'react-responsive';
-import { SearchMode, TuyChonModal } from '../tuy-chon-table';
+import { TuyChonModal } from '../tuy-chon-table';
+import { SearchMode } from '../types';
 
 export interface TableSearchBarProps {
   onClearAll?: () => void;

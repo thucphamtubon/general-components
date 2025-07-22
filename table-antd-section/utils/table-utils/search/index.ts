@@ -3,7 +3,7 @@
  */
 
 import { compareValues } from '../../common-utils';
-import { SearchMode, TableRecord } from '../types';
+import { SearchMode, TableRecord } from '../../../types';
 import { ColumnsType } from 'antd/lib/table';
 
 /**
@@ -13,7 +13,7 @@ export const filterDataBySearchTerm = <T extends TableRecord = TableRecord>(
   data: T[],
   searchTerm: string,
   searchableColumns?: string[],
-  searchMode: SearchMode = 'caseInsensitive'
+  searchMode: SearchMode = SearchMode.CaseInsensitive
 ): T[] => {
   if (!searchTerm) return data;
 

@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { FilterState, SortState } from '../types/table.types';
+import { FilterState, SortState } from '../types';
 import { DEFAULT_FILTERS_AND_SORTER } from '../constants';
 
 export interface FiltersAndSorterState {
+  tableId: string;
   filters: FilterState;
   sorter: SortState;
 }
@@ -69,35 +70,45 @@ export const useTableFiltersAndSorterStore = create<TableFiltersAndSorterStore>(
       },
     })),
     
-    clearFilters: (tableId) => set((state) => ({
-      filtersAndSorterConfig: {
-        ...state.filtersAndSorterConfig,
-        [tableId]: {
-          ...state.filtersAndSorterConfig[tableId],
-          filters: {},
+    clearFilters: (tableId) => set((state) => {
+      const currentConfig = state.filtersAndSorterConfig[tableId] || { tableId, filters: {}, sorter: {} };
+      return {
+        filtersAndSorterConfig: {
+          ...state.filtersAndSorterConfig,
+          [tableId]: {
+            ...currentConfig,
+            filters: {},
+          },
         },
-      },
-    })),
+      };
+    }),
     
-    clearSorter: (tableId) => set((state) => ({
-      filtersAndSorterConfig: {
-        ...state.filtersAndSorterConfig,
-        [tableId]: {
-          ...state.filtersAndSorterConfig[tableId],
-          sorter: {},
+    clearSorter: (tableId) => set((state) => {
+      const currentConfig = state.filtersAndSorterConfig[tableId] || { tableId, filters: {}, sorter: {} };
+      return {
+        filtersAndSorterConfig: {
+          ...state.filtersAndSorterConfig,
+          [tableId]: {
+            ...currentConfig,
+            sorter: {},
+          },
         },
-      },
-    })),
+      };
+    }),
     
-    clearAll: (tableId) => set((state) => ({
-      filtersAndSorterConfig: {
-        ...state.filtersAndSorterConfig,
-        [tableId]: {
-          filters: {},
-          sorter: {},
+    clearAll: (tableId) => set((state) => {
+      const currentConfig = state.filtersAndSorterConfig[tableId] || { tableId, filters: {}, sorter: {} };
+      return {
+        filtersAndSorterConfig: {
+          ...state.filtersAndSorterConfig,
+          [tableId]: {
+            tableId,
+            filters: {},
+            sorter: {},
+          },
         },
-      },
-    })),
+      };
+    }),
     
     // Phương thức mới để quản lý filter cho từng cột
     getColumnFilterValue: (tableId, columnKey) => {

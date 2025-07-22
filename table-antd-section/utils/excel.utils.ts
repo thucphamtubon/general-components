@@ -1,5 +1,5 @@
 import writeXlsxFile, { Cell, ColumnSchema, ValueType } from 'write-excel-file';
-import { ColumnsType, TableRecord } from '../types/table.types';
+import { ColumnsType, TableRecord } from '../types';
 
 type ExcelCellStyle = Cell & {
   color?: string;

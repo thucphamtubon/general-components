@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchMode } from './types';
+import { SearchMode } from '../types';
 
 /**
  * Mô tả các chế độ tìm kiếm cho người dùng

@@ -2,6 +2,8 @@
  * Sort utilities - Generic sorting functions
  */
 
+export type SorterType = 'id' | 'text' | 'number' | 'date';
+
 /**
  * Sorter for ID column, handles different types of IDs (number, string, or mixed)
  */
@@ -89,4 +91,34 @@ export const sorterDate = <T extends Record<string, any>>(
   const dateB = new Date(bValue as string | number);
 
   return dateA.getTime() - dateB.getTime();
+};
+
+/**
+ * Tạo hàm sorter cho bất kỳ cột nào
+ * Đảm bảo kiểu trả về tương thích với CompareFn của Ant Design
+ */
+export const createSorterFunction = <T extends Record<string, any>>(
+  columnKey: keyof T | string,
+  type: SorterType = 'text'
+) => {
+  // Sử dụng any để đảm bảo tương thích với CompareFn của antd
+  return (a: any, b: any): number => {
+    switch (type) {
+      case 'id':
+        return sorterId(a, b, columnKey as keyof T);
+      case 'number':
+        const numA = a[columnKey] as number;
+        const numB = b[columnKey] as number;
+        if (numA === undefined || numA === null) return -1;
+        if (numB === undefined || numB === null) return 1;
+        return numA - numB;
+      case 'date':
+        const dateA = a[columnKey] ? new Date(a[columnKey]).getTime() : 0;
+        const dateB = b[columnKey] ? new Date(b[columnKey]).getTime() : 0;
+        return dateA - dateB;
+      case 'text':
+      default:
+        return sorterText(a, b, columnKey as keyof T);
+    }
+  };
 };

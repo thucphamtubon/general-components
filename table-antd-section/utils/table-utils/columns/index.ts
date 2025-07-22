@@ -3,8 +3,8 @@
  */
 
 import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
-import { ColumnType, ColumnsType, TableRecord } from '../../../types/table.types';
-import { deepCloneArray } from '../common-utils/array-utils';
+import { ColumnType, ColumnsType, TableRecord } from '../../../types';
+import { deepCloneArray } from '../../common-utils/array-utils';
 
 /**
  * Lọc các cột hiển thị theo breakpoint hiện tại (responsive)
@@ -37,11 +37,22 @@ export const applyColumnDefaults = <T extends TableRecord = TableRecord>(
   columns: ColumnsType<T>,
   defaults: Partial<ColumnType<T>> = {}
 ): ColumnsType<T> => {
-  return columns.map(column => ({
-    ...defaults,
-    ...column,
-    children: column.children ? applyColumnDefaults(column.children, defaults) : undefined,
-  }));
+  return columns.map(column => {
+    // Check if column is a ColumnGroupType with children
+    if ('children' in column) {
+      return {
+        ...defaults,
+        ...column,
+        children: column.children ? applyColumnDefaults(column.children, defaults) : undefined,
+      };
+    }
+    
+    // Regular column without children
+    return {
+      ...defaults,
+      ...column,
+    };
+  });
 };
 
 /**
@@ -52,10 +63,10 @@ export const findColumnByKey = <T extends TableRecord = TableRecord>(
   key: string
 ): ColumnType<T> | undefined => {
   for (const column of columns) {
-    if (column.key === key || column.dataIndex === key) {
-      return column;
+    if ('key' in column && column.key === key || 'dataIndex' in column && column.dataIndex === key) {
+      return column as ColumnType<T>;
     }
-    if (column.children) {
+    if ('children' in column && column.children) {
       const found = findColumnByKey(column.children, key);
       if (found) return found;
     }

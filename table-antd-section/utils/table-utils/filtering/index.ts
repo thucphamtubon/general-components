@@ -2,27 +2,11 @@
  * Filtering utilities for table data
  */
 
-import { TableRecord } from '../types';
+import { TableRecord } from '../../../types';
 import { ColumnType, ColumnsType } from 'antd/lib/table';
+import { findColumnByKey } from '../columns';
 
-/**
- * Tìm column definition theo key
- */
-export const findColumnByKey = <T extends TableRecord = TableRecord>(
-  columns: ColumnsType<T>,
-  key: string
-): ColumnType<T> | undefined => {
-  for (const column of columns) {
-    if ('key' in column && column.key === key || 'dataIndex' in column && column.dataIndex === key) {
-      return column as ColumnType<T>;
-    }
-    if ('children' in column && column.children) {
-      const found = findColumnByKey(column.children, key);
-      if (found) return found;
-    }
-  }
-  return undefined;
-};
+// findColumnByKey has been moved to columns/index.ts
 
 /**
  * Áp dụng column filters lên dữ liệu

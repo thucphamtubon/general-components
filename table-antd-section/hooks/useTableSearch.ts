@@ -2,18 +2,28 @@ import { debounce } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DEFAULT_SEARCH, DEFAULT_TABLE_ID } from '../constants';
 import { getTableSearchState, useTableSearchStore } from '../stores/useTableSearchStore';
-import { SearchMode } from '../tuy-chon-table';
-import { SearchState, TableSearchOptions, UseTableSearchReturn } from '../types/table.types';
+import { SearchMode, SearchState, TableSearchOptions, UseTableSearchReturn } from '../types';
+
+// Mở rộng interface để bổ sung các tùy chọn tìm kiếm từ useTableOrchestrator
+export interface ExtendedTableSearchOptions extends TableSearchOptions {
+  onSearch?: (searchTerm: string) => void;
+  externalSearchTerm?: string;
+}
 
 export const useTableSearch = (
   defaultSearch: SearchState = DEFAULT_SEARCH,
-  options: TableSearchOptions = {},
+  options: ExtendedTableSearchOptions = {},
   defaultVisibleColumnKeys: string[] = [],
-): UseTableSearchReturn => {
+): UseTableSearchReturn & {
+  handleSearchChange: (value?: string) => void;
+  handleClearSearch: () => void;
+} => {
   const {
     tableId = DEFAULT_TABLE_ID,
     debounceMs = 300,
     saveUserPreferences = true,
+    onSearch,
+    externalSearchTerm,
   } = options;
 
   const {
@@ -86,6 +96,36 @@ export const useTableSearch = (
 
   // resetSearch function removed as it was unused
 
+  // Handler cho việc thay đổi tìm kiếm
+  const handleSearchChange = useCallback((value?: string) => {
+    if (value !== undefined) {
+      setSearchTerm(value);
+      if (onSearch) {
+        onSearch(value);
+      }
+    } else if (externalSearchTerm !== undefined) {
+      setSearchTerm(externalSearchTerm);
+      if (onSearch) {
+        onSearch(externalSearchTerm);
+      }
+    }
+  }, [setSearchTerm, externalSearchTerm, onSearch]);
+
+  // Handler cho việc xóa tìm kiếm
+  const handleClearSearch = useCallback(() => {
+    setSearchTerm('');
+    if (onSearch) {
+      onSearch('');
+    }
+  }, [setSearchTerm, onSearch]);
+
+  // Xử lý khi có external search term
+  useEffect(() => {
+    if (externalSearchTerm !== undefined) {
+      setSearchTerm(externalSearchTerm);
+    }
+  }, [externalSearchTerm]);
+
   return {
     searchTerm,
     debouncedSearchTerm,
@@ -95,6 +135,8 @@ export const useTableSearch = (
     setSearchMode: handleSetSearchMode,
     setVisibleColumnKeys: handleSetVisibleColumnKeys,
     handleSearch,
+    handleSearchChange,
+    handleClearSearch,
     clearSearch,
   };
 };

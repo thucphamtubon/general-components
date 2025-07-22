@@ -1,11 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { DEFAULT_PAGINATION, PDF_CONSTANTS } from '../constants';
+import { useTableFiltersAndSorter } from '../hooks/useTableFiltersAndSorter';
 import { useTableHeight } from '../hooks/useTableHeight';
-import { useTableOrchestrator } from '../hooks/useTableOrchestrator';
-import { EnhancedTableProps, TableRecord } from '../types/table.types';
+import { useTablePagination } from '../hooks/useTablePagination';
+import { ExtendedTableSearchOptions, useTableSearch } from '../hooks/useTableSearch';
+import { useTableSelection } from '../hooks/useTableSelection';
+import { EnhancedTableProps, SearchMode, TableRecord } from '../types';
+import { compareValues } from '../utils/common-utils';
 import { exportToExcel } from '../utils/excel.utils';
 import { exportToPdf } from '../utils/pdf.utils';
-import { applyColumnFilters, compareValues } from '../utils/table.utils';
+import { applyColumnFilters } from '../utils/table-utils';
 import { BaseTable } from './BaseTable';
 import { TablePagination } from './TablePagination';
 import { TableSearchBar } from './TableSearchBar';
@@ -33,34 +37,93 @@ export const EnhancedTable = <RecordType extends TableRecord = TableRecord>({
   enablePdfDownload = true,
   ...restProps
 }: EnhancedTableProps<RecordType>) => {
+  // Sử dụng các hook riêng biệt thay vì useTableOrchestrator
+  const defaultVisibleColumnKeys = columns.map((col) => (col.key || col.dataIndex) as string).filter(Boolean);
+
+  // Filters and sorter handling
   const {
     filters,
+    sorter,
+    handleTableChange,
+    clearAll: clearFiltersAndSorter,
+  } = useTableFiltersAndSorter(
+    { tableId, filters: {}, sorter: {} },
+    {
+      saveUserPreferences: true,
+      onFilterChange,
+      onSortChange,
+    }
+  );
+
+  // Pagination handling
+  const {
     paginationConfig,
+    handlePaginationChange,
+    resetPaginationConfig
+  } = useTablePagination(tableId);
+
+  // Search handling
+  const searchOptions: ExtendedTableSearchOptions = {
+    tableId,
+    onSearch,
+    externalSearchTerm,
+  };
+
+  const {
     searchTerm,
     searchMode,
     visibleColumnKeys,
-    visibleColumns,
-    rowSelectionConfig,
-    handleTableChange,
+    setVisibleColumnKeys,
+    handleSearch,
     handleSearchChange,
     handleClearSearch,
-    handleClearAll,
-    handleColumnsVisibilityChange,
-  } = useTableOrchestrator(tableId, {
+    clearSearch,
+  } = useTableSearch(
+    {
+      searchTerm: externalSearchTerm || '',
+      searchMode: SearchMode.AccentInsensitive,
+      visibleColumnKeys: defaultVisibleColumnKeys
+    },
+    searchOptions,
+    defaultVisibleColumnKeys
+  );
+
+  // Row selection handling
+  const {
+    clearSelection,
+    rowSelectionConfig
+  } = useTableSelection(
     defaultSelectedRowKeys,
-    defaultSearchTerm: externalSearchTerm || '',
-    defaultVisibleColumnKeys: columns.map((col) => (col.key || col.dataIndex) as string).filter(Boolean),
-    searchOptions: tableId ? { tableId } : undefined,
-    onSelectionChange,
-    onFilterChange,
-    onSortChange,
-    onSearch,
-    externalSearchTerm,
-    dataSource,
-    rowKey,
-    rowSelection,
-    columns,
-  });
+    {
+      rowSelection,
+      dataSource,
+      rowKey,
+      onSelectionChange
+    }
+  );
+
+  // Tạo hàm handleClearAll tương tự như trong useTableOrchestrator
+  const handleClearAll = useCallback(() => {
+    clearFiltersAndSorter();
+    resetPaginationConfig();
+    clearSearch();
+    clearSelection();
+  }, [clearFiltersAndSorter, resetPaginationConfig, clearSearch, clearSelection]);
+
+  // Xử lý visibleColumns
+  const visibleColumns = useMemo(() => {
+    if (!visibleColumnKeys.length || !columns.length) return columns;
+
+    return columns.filter((col) => {
+      const columnKey = (col.key || col.dataIndex) as string;
+      return visibleColumnKeys.includes(columnKey);
+    });
+  }, [columns, visibleColumnKeys]);
+
+  // Xử lý thay đổi hiển thị cột
+  const handleColumnsVisibilityChange = useCallback((newVisibleColumns: string[]) => {
+    setVisibleColumnKeys(newVisibleColumns);
+  }, [setVisibleColumnKeys]);
 
   const filteredDataSource = useMemo(() => {
     let filtered = dataSource;
@@ -149,15 +212,7 @@ export const EnhancedTable = <RecordType extends TableRecord = TableRecord>({
           }}
           loading={loading}
           handleTableChange={(page, pageSize) => {
-            if (handleTableChange) {
-              const newPagination = {
-                ...paginationConfig,
-                current: page,
-                pageSize: pageSize || paginationConfig.pageSize,
-                total: filteredDataSource.length
-              };
-              handleTableChange(newPagination, {}, {});
-            }
+            handlePaginationChange(page, pageSize);
           }}
           className="enhanced-table-pagination"
         />

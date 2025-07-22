@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SorterResult } from 'antd/lib/table/interface';
-import { FilterState, SortState } from '../types/table.types';
-import { DEFAULT_FILTERS_AND_SORTER, DEFAULT_TABLE_ID } from '../constants';
+import { SorterResult, TablePaginationConfig } from 'antd/lib/table/interface';
+import { FilterState, SortState } from '../types';
+import { DEFAULT_FILTERS_AND_SORTER } from '../constants';
 import { useTableFiltersAndSorterStore, getTableFiltersAndSorterState, FiltersAndSorterState } from '../stores/useTableFiltersAndSorterStore';
 
 export interface TableFiltersAndSorterOptions {
-  tableId?: string;
   saveUserPreferences?: boolean;
+  onFilterChange?: (filters: FilterState) => void;
+  onSortChange?: (sorter: SortState) => void;
 }
 
 export interface UseTableFiltersAndSorterReturn {
@@ -16,6 +17,11 @@ export interface UseTableFiltersAndSorterReturn {
   setSorter: (sorter: SortState) => void;
   handleFilterChange: (filters: Record<string, any>) => void;
   handleSorterChange: (sorter: SorterResult<any> | SorterResult<any>[]) => void;
+  handleTableChange: (
+    pagination: TablePaginationConfig,
+    filters: Record<string, any>,
+    sorter: SorterResult<any> | SorterResult<any>[],
+  ) => void;
   clearFilters: () => void;
   clearSorter: () => void;
   clearAll: () => void;
@@ -27,9 +33,12 @@ export const useTableFiltersAndSorter = (
   options: TableFiltersAndSorterOptions = {},
 ): UseTableFiltersAndSorterReturn => {
   const {
-    tableId = DEFAULT_TABLE_ID,
     saveUserPreferences = true,
+    onFilterChange,
+    onSortChange,
   } = options;
+  
+  const { tableId } = defaultConfig;
 
   const {
     setFiltersAndSorterConfig,
@@ -50,9 +59,19 @@ export const useTableFiltersAndSorter = (
 
   useEffect(() => {
     if (saveUserPreferences) {
-      setFiltersAndSorterConfig(tableId, { filters, sorter });
+      setFiltersAndSorterConfig(tableId, { tableId, filters, sorter });
     }
-  }, [filters, sorter, tableId, saveUserPreferences, setFiltersAndSorterConfig]);
+    
+    if (onFilterChange) {
+      onFilterChange(filters);
+    }
+  }, [filters, sorter, tableId, saveUserPreferences, setFiltersAndSorterConfig, onFilterChange]);
+
+  useEffect(() => {
+    if (onSortChange) {
+      onSortChange(sorter);
+    }
+  }, [sorter, onSortChange]);
 
   const setFilters = useCallback((newFilters: FilterState) => {
     setLocalFilters(newFilters);
@@ -123,6 +142,37 @@ export const useTableFiltersAndSorter = (
     }
   }, [defaultConfig, tableId, saveUserPreferences, resetFiltersAndSorterConfig]);
 
+  // Table Change Handler - Xử lý tất cả các thay đổi bảng
+  const handleTableChange = useCallback(
+    (
+      pagination: TablePaginationConfig,
+      filters: Record<string, any>,
+      sorter: SorterResult<any> | SorterResult<any>[],
+    ) => {
+      if (filters) {
+        handleFilterChange(filters);
+      }
+
+      if (sorter) {
+        if (Array.isArray(sorter)) {
+          if (sorter.length > 0) {
+            handleSorterChange(sorter[0]);
+          } else {
+            // Xử lý trường hợp mảng sorter rỗng - đặt về sorter trống
+            handleSorterChange({ columnKey: undefined, order: undefined });
+          }
+        } else if (sorter.columnKey || sorter.order) {
+          // Chỉ xử lý sorter khi có columnKey hoặc order
+          handleSorterChange(sorter);
+        } else if (Object.keys(sorter).length === 0) {
+          // Xử lý trường hợp sorter là object rỗng {}
+          handleSorterChange({ columnKey: undefined, order: undefined });
+        }
+      }
+    },
+    [handleFilterChange, handleSorterChange]
+  );
+
   return {
     filters,
     sorter,
@@ -130,6 +180,7 @@ export const useTableFiltersAndSorter = (
     setSorter,
     handleFilterChange,
     handleSorterChange,
+    handleTableChange,
     clearFilters,
     clearSorter,
     clearAll,

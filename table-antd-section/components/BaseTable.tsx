@@ -2,7 +2,7 @@ import { Spin, Table } from 'antd';
 import type { GetRowKey } from 'antd/lib/table/interface';
 import React from 'react';
 import { useMemo } from 'react';
-import { TableProps, TableRecord } from '../types/table.types';
+import { TableProps, TableRecord } from '../types';
 
 /**
  * BaseTable component - Thành phần BaseTable

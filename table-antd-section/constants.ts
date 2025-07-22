@@ -1,5 +1,4 @@
-import { PaginationState, SearchState, FilterState, SortState } from "./types/table.types";
-import { SearchMode } from "./tuy-chon-table";
+import { FilterState, PaginationState, SearchMode, SearchState, SortState } from "./types";
 
 export const DEFAULT_PAGINATION: PaginationState = {
   current: 1,
@@ -16,14 +15,15 @@ export const DEFAULT_FILTERS: FilterState = {};
 
 export const DEFAULT_SORTER: SortState = {};
 
+export const DEFAULT_TABLE_ID = 'default-table';
+
 export const DEFAULT_FILTERS_AND_SORTER = {
+  tableId: DEFAULT_TABLE_ID,
   filters: DEFAULT_FILTERS,
   sorter: DEFAULT_SORTER,
 };
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = ['10', '25', '50', '100', '200'];
-
-export const DEFAULT_TABLE_ID = 'default-table';
 
 export const PDF_CONSTANTS = {
   PAGE_SIZE: {
